@@ -1,9 +1,10 @@
 import type { Component, JSX } from 'solid-js';
 import { createSignal, createEffect, onMount, onCleanup } from 'solid-js';
 
-const defaultModalStyles = {
+const defaultModalStyles: JSX.CSSProperties = {
   border: '1px solid #111111',
   'border-radius': '5px',
+  'text-align': 'center',
 };
 
 type ModalProps = {

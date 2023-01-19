@@ -36,7 +36,7 @@ const App: Component = () => {
   const closeModal = () => setModalIsOpen(false);
 
   return (
-    </>
+    <>
       <h1>This is a Solid App</h1>
       <button
         type='button'
