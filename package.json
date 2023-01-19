@@ -1,0 +1,39 @@
+{
+  "name": "solid-dialog",
+  "version": "0.0.1",
+  "description": "Accessible customizable modals for solid-js",
+  "author": "Alaric von Teplitz",
+  "main": "dist/index.jsx",
+  "types": "dist/index.d.ts",
+  "files": [
+    "/dist"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Alaricus/solid-dialog.git"
+  },
+  "keywords": [
+    "modal",
+    "dialog",
+    "solid",
+    "solid-js",
+    "solidjs",
+    "accessibility",
+    "a11y"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/Alaricus/solid-dialog#readme",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.48.2",
+    "@typescript-eslint/parser": "^5.48.2",
+    "eslint": "^8.32.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-solid": "^0.9.3",
+    "solid-js": "^1.6.9",
+    "typescript": "^4.9.4"
+  }
+}

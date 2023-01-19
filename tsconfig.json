@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "target": "es2015",
+    "module": "es2020",
+    "moduleResolution": "node",
+    "outDir": "./dist",
+    "noImplicitAny": true,
+    "declaration": true,
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js",
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}
