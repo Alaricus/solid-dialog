@@ -37,13 +37,13 @@ const App: Component = () => {
 
   return (
     <>
-      <h1>This is a Solid App</h1>
       <button
         type='button'
         onClick={() => setModalIsOpen(true)}
       >
         show modal
       </button>
+
       <Modal
         isShown={modalIsOpen()}
         closeModal={closeModal}
@@ -65,6 +65,7 @@ The modal has the following properties:
 | `closeModal`     | **yes**  | `() => void` |
 | `children`       | **yes**  | `JSX.Element`
 | `dismissText`    | no       | `string`
+| `maxMobileWidth` | no       | `number`
 | `modalStyles`    | no       | `JSX.CSSProperties`
 | `backdropStyles` | no       | object with two optional `string` properties: `background-color` and `backdrop-filter`
 
@@ -84,15 +85,18 @@ This is the contents of the modal. Normally it would be any JSX that's placed be
 ### `dismissText`
 This is the text that will be displayed on the dismiss button. The default is "OK".
 
+### `maxMobileWidth`
+This sets the maximum viewport width (in pixels) at which the mobile version of the modal will display. The default is `500` pixels.
+
 ### `modalStyles`
-This is an object with representing the CSS styles that you want applied to the modal. It could look like this:
+This is an object with representing the CSS styles to be applied to the modal. These styles will only affect the desktop version. It could look like this:
 
 ```javascript
 {
   color: 'orangered',
   width: '30rem',
   border: '8px solid orange',
-  'background-color': 'lightorange',
+  'background-color': 'lightblue',
   'border-radius': '50%',
   translate: '0 -200%',
 }
@@ -102,7 +106,7 @@ Alternatively, if you want to style all of the modals at once, you can create a 
 
 ```css
 .solidDialog {
-  background-color: lightorange;
+  background-color: lightblue;
 }
 ```
 
@@ -116,11 +120,16 @@ This is an object, just like above, but it's restricted to two properties only: 
 }
 ```
 
-Just as with `modalStyles` this can be set in a CSS file instead. For example:
+## Footguns
 
-```css
-.solidDialog::backdrop {
-  background-color: rgba(0, 150, 0, 0.2);
-  backdrop-filter: invert(90%) blur(3px);
-}
-```
+Shooting yourself in the foot is possible but not encouraged. Here are some possible ways:
+
+### CSS
+
+The component accepts all CSS but it doesn't know what the styles actually do. It is entirely possible to style it in such a way that it will appear off-screen or impossible to close, or the text will be impossible to read. Just as it is your own responsibility to style the rest of your site in a way that makes it usable, it is your responsibility to style this component in a similar manner.
+
+### Modals Everywhere All at Once
+
+You can open multiple modals if you so desire. Although you will be able to close them all in sequence and resume your normal activities, this may not be a good experience. In particular, mind the fact that the backdrops (if translucent) will combine both their colors and their filters to create some modern art that may not be aesthetically pleasing.
+
+That said, rules were meant to be broken (so long as you understand them). Good luck!

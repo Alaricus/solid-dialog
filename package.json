@@ -1,15 +1,15 @@
 {
   "name": "solid-dialog",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Accessible customizable modals for solid-js",
   "author": "Alaric von Teplitz",
   "main": "dist/index.jsx",
   "types": "dist/index.d.ts",
-  "files": [
-    "/dist"
-  ],
+  "files": ["/dist"],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npx tsc",
+    "deploy": "npm publish"
   },
   "repository": {
     "type": "git",
@@ -21,7 +21,7 @@
     "solid",
     "solid-js",
     "solidjs",
-    "accessibility",
+    "accessible",
     "a11y"
   ],
   "license": "ISC",

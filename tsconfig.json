@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "strict": true,
-    "target": "es2015",
+    "target": "es2017",
     "module": "es2020",
     "moduleResolution": "node",
     "outDir": "./dist",
