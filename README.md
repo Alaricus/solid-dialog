@@ -6,7 +6,7 @@ Customizable and accessible modals for solid-js.
 
 * Uses the HTML `<dialog>` tag, providing native accessibility and reducing the package size by avoiding the use of countless `<div>`s and custom backdrop implementations.
 
-* Is fully customizable via regular CSS.
+* Allows for comprehensive in-depth customization via standard CSS.
 
 ## Setup
 
@@ -59,15 +59,17 @@ const App: Component = () => {
 
 The modal has the following properties:
 
-| property         | required | type    |
-|------------------|----------|---------|
-| `isShown`        | **yes**  | `boolean` |
-| `closeModal`     | **yes**  | `() => void` |
-| `children`       | **yes**  | `JSX.Element`
-| `dismissText`    | no       | `string`
-| `maxMobileWidth` | no       | `number`
-| `modalStyles`    | no       | `JSX.CSSProperties`
-| `backdropStyles` | no       | object with two optional `string` properties: `background-color` and `backdrop-filter`
+property | required | type
+-|-|-
+`isShown` | **yes** | `boolean`
+`closeModal` | **yes** | `() => void`
+`children` | **yes** | `JSX.Element`
+`dismissText` | no | `string`
+`maxMobileWidth` | no | `number`
+`modalStyles` | no | `JSX.CSSProperties`
+`backdropStyles` | no | object with two optional `string` properties: `background-color` and `backdrop-filter`
+`disableDefaultMobileStyles` | no | `boolean`
+| `disableDefaultDesktopStyles` | no | `boolean`
 
 Here is what they do and how to use them:
 
@@ -86,7 +88,7 @@ This is the contents of the modal. Normally it would be any JSX that's placed be
 This is the text that will be displayed on the dismiss button. The default is "OK".
 
 ### `maxMobileWidth`
-This sets the maximum viewport width (in pixels) at which the mobile version of the modal will display. The default is `500` pixels.
+This sets the maximum viewport width (in pixels) at which the mobile version of the modal will display. The default is 500 pixels.
 
 ### `modalStyles`
 This is an object with representing the CSS styles to be applied to the modal. These styles will only affect the desktop version. It could look like this:
@@ -102,14 +104,6 @@ This is an object with representing the CSS styles to be applied to the modal. T
 }
 ```
 
-Alternatively, if you want to style all of the modals at once, you can create a global style within your CSS files. The modal has a class of `solidDialog` so just style that. It could look like this:
-
-```css
-.solidDialog {
-  background-color: lightblue;
-}
-```
-
 ### `backdropStyles`
 This is an object, just like above, but it's restricted to two properties only: `background-color` and `backdrop-filter`. The former takes any valid CSS way of setting a colore, while the latter take any valid CSS filters. For example:
 
@@ -120,9 +114,64 @@ This is an object, just like above, but it's restricted to two properties only: 
 }
 ```
 
+### `disableDefaultMobileStyles`
+Pass this property if you want to disable default mobile styles and write everything from scratch via the `.solidDialog` class. Here is what you'll be disabling:
+
+```css
+.innerSDMobile {
+  text-align: center;
+  margin: 0;
+  min-height: 100vh;
+  min-width: 100vw;
+  border: none;
+  border-radius: 0;
+}
+.innerSDMobile:modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+```
+
+### `disableDefaultDesktopStyles`
+Pass this property if you want to disable default mobile styles and write everything from scratch via the `.solidDialog` class. Here is what you'll be disabling:
+
+```css
+.innerSDDesktop {
+    text-align: center;
+    border: 1px solid #111111;
+    border-radius: 5px;
+    min-height: 0;
+    min-width: 0;
+  }
+  .innerSDDesktop::backdrop {
+    background-color: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(5px);
+  }
+```
+
+## Style Precedence / Specificity
+
+### id / props
+The styles you pass through props will be set via a CSS id. That makes them the most specific and they will take precedense over both the default and the global styles.
+
+### class / defaults
+Unless you disable the default styles, they will take over if you decide not to use the props. They are set via CSS classes.
+
+### class / global
+If you do disable the defaults and pass nothing through props, you have the option to use global styles. You can always just style the `<dialog>` tag, but to help differentiate between other dialogs you may have on your page, there is a CSS class called `solidDialog` that's specific to this package.
+
+You can also use it in conjunction with props and defaults, but keep in mind that it will only override those CSS properties that are not set in either of the above. It's helpful for providing styles that should be common to all modals. It could look like this:
+
+```css
+.solidDialog {
+  background-color: lightblue;
+}
+```
+
 ## Footguns
 
-Shooting yourself in the foot is possible but not encouraged. Here are some possible ways:
+Shooting yourself in the foot is possible but not encouraged. Here are a few ways:
 
 ### CSS
 

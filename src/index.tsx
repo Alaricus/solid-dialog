@@ -1,5 +1,5 @@
 import type { Component, JSX } from 'solid-js';
-import { createSignal, createEffect, onMount, onCleanup } from 'solid-js';
+import { createEffect, onMount, onCleanup, createUniqueId } from 'solid-js';
 
 type ModalProps = {
   isShown: boolean;
@@ -7,21 +7,19 @@ type ModalProps = {
   children: JSX.Element;
   dismissText?: string;
   modalStyles?: JSX.CSSProperties;
-  backdropStyles?: {
-    'background-color'?: string,
-    'backdrop-filter'?: string
-  };
+  backdropStyles?: JSX.CSSProperties;
   maxMobileWidth?: number;
+  disableDefaultDesktopStyles?: boolean;
+  disableDefaultMobileStyles?: boolean;
 }
 
 const Modal: Component<ModalProps> = props => {
-  const [bdColor, setBdColor] = createSignal('rgba(0, 0, 0, 0.2)');
-  const [bdFilter, setBdFilter] = createSignal('blur(5px)');
   let modalRef: HTMLDialogElement | undefined;
 
   const defaultMobileWidth = 500;
+  const dialogId = createUniqueId();
 
-  function processModalCSS(cssJSON: JSX.CSSProperties): string {
+  function processCssJSON(cssJSON: JSX.CSSProperties): string {
     let css = '';
     Object.entries(cssJSON).forEach((entry: [string, string]) => {
       css += `${entry[0]}: ${entry[1]};`;
@@ -52,9 +50,6 @@ const Modal: Component<ModalProps> = props => {
     if (props.isShown) {
       modalRef?.showModal();
     }
-
-    setBdColor(props.backdropStyles?.['background-color'] ?? bdColor());
-    setBdFilter(props.backdropStyles?.['backdrop-filter'] ?? bdFilter());
   });
 
   onCleanup(() => {
@@ -68,13 +63,21 @@ const Modal: Component<ModalProps> = props => {
   };
 
   return (
-    <dialog ref={modalRef} class="solidDialog">
+    <dialog
+      ref={modalRef}
+      id={`sd${dialogId}`}
+      classList={{
+        solidDialog: true,
+        innerSDMobile: !props.disableDefaultMobileStyles,
+        innerSDDesktop: !props.disableDefaultDesktopStyles,
+      }}
+    >
       { props.children }
       <button type='button' onClick={dismiss}>{props.dismissText || 'OK'}</button>
       <style>
         {`
           @media (max-width: ${props.maxMobileWidth || defaultMobileWidth}px) {
-            .solidDialog {
+            .innerSDMobile {
               text-align: center;
               margin: 0;
               min-height: 100vh;
@@ -82,25 +85,32 @@ const Modal: Component<ModalProps> = props => {
               border: none;
               border-radius: 0;
             }
-            .solidDialog:modal {
+            .innerSDMobile:modal {
               display: flex;
               flex-direction: column;
               justify-content: center;
             }
+            #sd${dialogId} {}
+            #sd${dialogId}:modal {}
           }
 
           @media (min-width: ${props.maxMobileWidth ? props.maxMobileWidth + 1 : defaultMobileWidth + 1}px) {
-            .solidDialog {
+            .innerSDDesktop {
               text-align: center;
               border: 1px solid #111111;
               border-radius: 5px;
               min-height: 0;
               min-width: 0;
-              ${props.modalStyles && processModalCSS(props.modalStyles)}
             }
-            .solidDialog::backdrop {
-              background-color: ${bdColor()};
-              backdrop-filter: ${bdFilter()};
+            .innerSDDesktop::backdrop {
+              background-color: rgba(0, 0, 0, 0.2);
+              backdrop-filter: blur(5px);
+            }
+            #sd${dialogId} {
+              ${props.modalStyles ? processCssJSON(props.modalStyles) : ''}
+            }
+            #sd${dialogId}::backdrop {
+              ${props.backdropStyles ? processCssJSON(props.backdropStyles) : ''}
             }
           }
         `}
