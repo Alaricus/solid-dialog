@@ -67,7 +67,7 @@ property | required | type
 `dismissText` | no | `string`
 `maxMobileWidth` | no | `number`
 `modalStyles` | no | `JSX.CSSProperties`
-`backdropStyles` | no | object with two optional `string` properties: `background-color` and `backdrop-filter`
+`backdropStyles` | no | `JSX.CSSProperties`
 `disableDefaultMobileStyles` | no | `boolean`
 | `disableDefaultDesktopStyles` | no | `boolean`
 
@@ -105,7 +105,7 @@ This is an object with representing the CSS styles to be applied to the modal. T
 ```
 
 ### `backdropStyles`
-This is an object, just like above, but it's restricted to two properties only: `background-color` and `backdrop-filter`. The former takes any valid CSS way of setting a colore, while the latter take any valid CSS filters. For example:
+This is an object, just like above, but for styles specific to the backdrop. For example:
 
 ```javascript
 {
