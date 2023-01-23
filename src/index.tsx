@@ -11,6 +11,8 @@ type ModalProps = {
   maxMobileWidth?: number;
   disableDefaultDesktopStyles?: boolean;
   disableDefaultMobileStyles?: boolean;
+  classDialog?: string;
+  classButton?: string;
 }
 
 const Modal: Component<ModalProps> = props => {
@@ -70,10 +72,11 @@ const Modal: Component<ModalProps> = props => {
         solidDialog: true,
         innerSDMobile: !props.disableDefaultMobileStyles,
         innerSDDesktop: !props.disableDefaultDesktopStyles,
+        classDialog: true,
       }}
     >
       { props.children }
-      <button type='button' onClick={dismiss}>{props.dismissText || 'OK'}</button>
+      <button type='button' class={` ${classButton} `} onClick={dismiss}>{props.dismissText || 'OK'}</button>
       <style>
         {`
           @media (max-width: ${props.maxMobileWidth || defaultMobileWidth}px) {
