@@ -143,7 +143,7 @@ Pass this property if you want to disable default mobile styles and write everyt
 ```
 
 ### `disableDismissMethods`
-Pass this property if you want to remove the default dismiss button. This is dangerous because it means that your users will not be able to close the modal by clicking the button or hitting they Esc key or clicking on the backdrop. You will need to provide your own button with a function that finds the containing `<dialog>` and calls its `.close()` method. It could look like this:
+Pass this property if you want to remove the default dismiss button. This is dangerous because it means that your users will not be able to close the modal by clicking the button or hitting the Esc key or clicking on the backdrop. You will need to provide your own button with a function that finds the containing `<dialog>` and calls its `.close()` method. It could look like this:
 
 ```typescript
   const closeButtonlessModal: JSX.EventHandler<Node, Event> = e => {
@@ -185,9 +185,9 @@ The styles you pass through props will be set via a CSS id. That makes them the 
 Unless you disable the default styles, they will take over if you decide not to use the props. They are set via CSS classes.
 
 ### class / global
-If you do disable the defaults and pass nothing through props, you have the option to use global styles. You can always just style the `<dialog>` tag, but to help differentiate between other dialogs you may have on your page, there is a CSS class called `solidDialog` that's specific to this package.
+If you do disable the defaults and pass nothing through props, you have the option to use global styles. You can always just style the `<dialog>` tag, but to help differentiate between other dialogs you may have on your page, there is a CSS class called `.solidDialog` that's specific to this package.
 
-You can also use it in conjunction with props and defaults, but keep in mind that it will only override those CSS properties that are not set in either of the above. It's helpful for providing styles that should be common to all modals. It could look like this:
+You can also use it in conjunction with props and defaults, but keep in mind that it will override only those CSS properties that are not set in either of the above. It's helpful for providing styles that should be common to all modals. It could look like this:
 
 ```css
 .solidDialog {
