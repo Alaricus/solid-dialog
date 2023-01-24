@@ -1,5 +1,5 @@
 import type { Component, JSX } from 'solid-js';
-import { createEffect, onMount, onCleanup, createUniqueId } from 'solid-js';
+import { createEffect, onMount, onCleanup, createUniqueId, Show } from 'solid-js';
 
 type ModalProps = {
   isShown: boolean;
@@ -11,6 +11,7 @@ type ModalProps = {
   maxMobileWidth?: number;
   disableDefaultDesktopStyles?: boolean;
   disableDefaultMobileStyles?: boolean;
+  disableDismissMethods?: boolean;
 }
 
 const Modal: Component<ModalProps> = props => {
@@ -27,8 +28,19 @@ const Modal: Component<ModalProps> = props => {
     return css;
   }
 
-  function onClose() {
+  function onCancel(e: Event) {
+    if (props.disableDismissMethods) {
+      e.preventDefault();
+      return;
+    }
+
     props.closeModal();
+  }
+
+  function onEsc(e: KeyboardEvent) {
+    if (e.key === 'Escape' && props.disableDismissMethods) {
+      e.preventDefault();
+    }
   }
 
   function onBackdropClick(e: MouseEvent) {
@@ -42,8 +54,9 @@ const Modal: Component<ModalProps> = props => {
   }
 
   onMount(() => {
-    modalRef?.addEventListener('close', onClose);
+    modalRef?.addEventListener('cancel', onCancel);
     modalRef?.addEventListener('click', onBackdropClick);
+    modalRef?.addEventListener('keydown', onEsc);
   });
 
   createEffect(() => {
@@ -53,11 +66,13 @@ const Modal: Component<ModalProps> = props => {
   });
 
   onCleanup(() => {
-    modalRef?.removeEventListener('close', onClose);
+    modalRef?.removeEventListener('cancel', onCancel);
     modalRef?.removeEventListener('click', onBackdropClick);
+    modalRef?.removeEventListener('keydown', onEsc);
   });
 
   const dismiss = () => {
+    if (props.disableDismissMethods) { return; }
     modalRef?.close();
     props.closeModal();
   };
@@ -73,7 +88,9 @@ const Modal: Component<ModalProps> = props => {
       }}
     >
       { props.children }
-      <button type='button' onClick={dismiss}>{props.dismissText || 'OK'}</button>
+      <Show when={!props.disableDismissMethods}>
+        <button type='button' onClick={dismiss}>{props.dismissText || 'OK'}</button>
+      </Show>
       <style>
         {`
           @media (max-width: ${props.maxMobileWidth || defaultMobileWidth}px) {

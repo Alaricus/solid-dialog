@@ -1,6 +1,6 @@
 {
   "name": "solid-dialog",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Accessible customizable modals for solid-js",
   "author": "Alaric von Teplitz",
   "main": "dist/index.jsx",
