@@ -63,7 +63,7 @@ property | required | type
 `backdropStyles` | no | `JSX.CSSProperties`
 `disableDefaultMobileStyles` | no | `boolean`
 `disableDefaultDesktopStyles` | no | `boolean`
-`disableDismissButton` | no | `boolean`
+`disableDismissMethods` | no | `boolean`
 
 Here is what they do and how to use them:
 
@@ -148,7 +148,10 @@ Pass this property if you want to remove the default dismiss button. This is dan
 ```typescript
   const closeButtonlessModal: JSX.EventHandler<Node, Event> = e => {
     let currentParent: Node | null | undefined = e.currentTarget?.parentNode;
-    while (currentParent?.nodeName && currentParent.nodeName !== 'BODY' && currentParent.nodeName !== 'DIALOG') {
+    while (currentParent?.nodeName
+      && currentParent.nodeName !== 'BODY'
+      && currentParent.nodeName !== 'DIALOG'
+    ) {
       currentParent = currentParent?.parentElement;
     }
     if (currentParent && currentParent.nodeName === 'DIALOG') {
@@ -167,7 +170,7 @@ and then the modal can be used like this:
     isShown={buttonlessIsOpen()}
     closeModal={closeUnstyledModal}
     dismissText="dismiss this modal"
-    disableDismissButton
+    disableDismissMethods
   >
     this is a modal with the default "close" button disabled <br />
     <button type="button" onClick={closeButtonlessModal}>external exit button</button>
