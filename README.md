@@ -168,14 +168,14 @@ and then the modal can be used like this:
 ```jsx
   <Modal
     isShown={buttonlessIsOpen()}
-    closeModal={closeUnstyledModal}
-    dismissText="dismiss this modal"
+    closeModal={() => undefined}
     disableDismissMethods
   >
     this is a modal with the default "close" button disabled <br />
     <button type="button" onClick={closeButtonlessModal}>external exit button</button>
   </Modal>
 ```
+Notice how even though the modal isn't using the `closeModal` prop anymore, we are still providing it with a function. The reason for that is that we want to keep that prop a requred one as it is the most common scenario. Giving it a function that does nothing allows us to continue doing that.
 
 ## Style Precedence / Specificity
 ### id / props
