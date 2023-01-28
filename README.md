@@ -95,8 +95,8 @@ These are objects with 4 optional properties (`dialog`, `modal`, `backdrop`, and
     button: desktopButtonCSS, // object defined elsewhere
   }}
   mobileStyles={{
-    dialog: { background: 'lightskyblue' },
-    button: { border: '2px dashed orange' },
+    dialog: { background: 'lightskyblue' }, // defined in-line
+    button: { border: '2px dashed orange' }, // defined in-line
   }}
 >
   This is a styled modal.
