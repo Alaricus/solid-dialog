@@ -59,8 +59,8 @@ property | required | type
 `children` | **yes** | `JSX.Element`
 `dismissText` | no | `string`
 `maxMobileWidth` | no | `number`
-`mobileStyles` | no | object with 4 optional properties (dialog, modal, backdrop, and button) each of which is if type `JSX.CSSProperties`
-`desktopStyles` | no | object with 4 optional properties (dialog, modal, backdrop, and button) each of which is if type `JSX.CSSProperties`
+`mobileStyles` | no | `{`<br>&nbsp;&nbsp;`dialog: JSX.CSSProperties,`<br>&nbsp;&nbsp;`modal: JSX.CSSProperties,`<br>&nbsp;&nbsp;`backdrop: JSX.CSSProperties,`<br>&nbsp;&nbsp;`button: JSX.CSSProperties`<br>`}`
+`desktopStyles` | no | `{`<br>&nbsp;&nbsp;`dialog: JSX.CSSProperties,`<br>&nbsp;&nbsp;`modal: JSX.CSSProperties,`<br>&nbsp;&nbsp;`backdrop: JSX.CSSProperties,`<br>&nbsp;&nbsp;`button: JSX.CSSProperties`<br>`}`
 `disableDefaultMobileStyles` | no | `boolean`
 `disableDefaultDesktopStyles` | no | `boolean`
 `disableDismissMethods` | no | `boolean`
@@ -90,9 +90,9 @@ These are objects with 4 optional properties (`dialog`, `modal`, `backdrop`, and
   isShown={modalIsOpen()}
   closeModal={closeModal}
   desktopStyles={{
-    dialog: desktopDialogCSS,
-    backdrop: desktopBackdropCSS,
-    button: desktopButtonCSS,
+    dialog: desktopDialogCSS, // object defined elsewhere
+    backdrop: desktopBackdropCSS, // object defined elsewhere
+    button: desktopButtonCSS, // object defined elsewhere
   }}
   mobileStyles={{
     dialog: { background: 'lightskyblue' },
