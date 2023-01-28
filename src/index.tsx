@@ -6,8 +6,18 @@ type ModalProps = {
   closeModal: () => void;
   children: JSX.Element;
   dismissText?: string;
-  modalStyles?: JSX.CSSProperties;
-  backdropStyles?: JSX.CSSProperties;
+  mobileStyles?: {
+    dialog: JSX.CSSProperties;
+    modal: JSX.CSSProperties;
+    backdrop: JSX.CSSProperties;
+    button: JSX.CSSProperties;
+  };
+  desktopStyles?: {
+    dialog: JSX.CSSProperties;
+    modal: JSX.CSSProperties;
+    backdrop: JSX.CSSProperties;
+    button: JSX.CSSProperties;
+  };
   maxMobileWidth?: number;
   disableDefaultDesktopStyles?: boolean;
   disableDefaultMobileStyles?: boolean;
@@ -89,7 +99,7 @@ const Modal: Component<ModalProps> = props => {
     >
       { props.children }
       <Show when={!props.disableDismissMethods}>
-        <button type='button' onClick={dismiss}>{props.dismissText || 'OK'}</button>
+        <button type='button' id={`sd${dialogId}btn`} onClick={dismiss}>{props.dismissText || 'OK'}</button>
       </Show>
       <style>
         {`
@@ -107,8 +117,11 @@ const Modal: Component<ModalProps> = props => {
               flex-direction: column;
               justify-content: center;
             }
-            #sd${dialogId} {}
-            #sd${dialogId}:modal {}
+
+            ${props.mobileStyles?.dialog ? `#sd${dialogId} {${processCssJSON(props.mobileStyles.dialog)}}` : ''}
+            ${props.mobileStyles?.modal ? `#sd${dialogId}:modal {${processCssJSON(props.mobileStyles.modal)}}` : ''}
+            ${props.mobileStyles?.backdrop ? `#sd${dialogId}::backdrop {${processCssJSON(props.mobileStyles.backdrop)}}` : ''}
+            ${props.mobileStyles?.button ? `#sd${dialogId}btn {${processCssJSON(props.mobileStyles.button)}}` : ''}
           }
 
           @media (min-width: ${props.maxMobileWidth ? props.maxMobileWidth + 1 : defaultMobileWidth + 1}px) {
@@ -123,12 +136,10 @@ const Modal: Component<ModalProps> = props => {
               background-color: rgba(0, 0, 0, 0.2);
               backdrop-filter: blur(5px);
             }
-            #sd${dialogId} {
-              ${props.modalStyles ? processCssJSON(props.modalStyles) : ''}
-            }
-            #sd${dialogId}::backdrop {
-              ${props.backdropStyles ? processCssJSON(props.backdropStyles) : ''}
-            }
+            ${props.desktopStyles?.dialog ? `#sd${dialogId} {${processCssJSON(props.desktopStyles.dialog)}}` : ''}
+            ${props.desktopStyles?.modal ? `#sd${dialogId}:modal {${processCssJSON(props.desktopStyles.modal)}}` : ''}
+            ${props.desktopStyles?.backdrop ? `#sd${dialogId}::backdrop {${processCssJSON(props.desktopStyles.backdrop)}}` : ''}
+            ${props.desktopStyles?.button ? `#sd${dialogId}btn {${processCssJSON(props.desktopStyles.button)}}` : ''}
           }
         `}
       </style>
