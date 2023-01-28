@@ -50,7 +50,7 @@ const App: Component = () => {
 ```
 
 ## Advanced Usage
-The modal has the following properties:
+A modal accepts the following props:
 
 property | required | type
 -|-|-
@@ -59,8 +59,8 @@ property | required | type
 `children` | **yes** | `JSX.Element`
 `dismissText` | no | `string`
 `maxMobileWidth` | no | `number`
-`modalStyles` | no | `JSX.CSSProperties`
-`backdropStyles` | no | `JSX.CSSProperties`
+`mobileStyles` | no | `{`<br>&nbsp;&nbsp;`dialog: JSX.CSSProperties,`<br>&nbsp;&nbsp;`modal: JSX.CSSProperties,`<br>&nbsp;&nbsp;`backdrop: JSX.CSSProperties,`<br>&nbsp;&nbsp;`button: JSX.CSSProperties`<br>`}`
+`desktopStyles` | no | `{`<br>&nbsp;&nbsp;`dialog: JSX.CSSProperties,`<br>&nbsp;&nbsp;`modal: JSX.CSSProperties,`<br>&nbsp;&nbsp;`backdrop: JSX.CSSProperties,`<br>&nbsp;&nbsp;`button: JSX.CSSProperties`<br>`}`
 `disableDefaultMobileStyles` | no | `boolean`
 `disableDefaultDesktopStyles` | no | `boolean`
 `disableDismissMethods` | no | `boolean`
@@ -82,28 +82,25 @@ This is the text that will be displayed on the dismiss button. The default is "O
 ### `maxMobileWidth`
 This sets the maximum viewport width (in pixels) at which the mobile version of the modal will display. The default is 500 pixels.
 
-### `modalStyles`
-This is an object with representing the CSS styles to be applied to the modal. These styles will only affect the desktop version. It could look like this:
+### `mobileStyles` and `desktopStyles`
+These are objects with 4 optional properties (`dialog`, `modal`, `backdrop`, and `button`) each representing the CSS styles to be applied to the different areas of the modal. It could look like this:
 
 ```javascript
-{
-  color: 'orangered',
-  width: '30rem',
-  border: '8px solid orange',
-  'background-color': 'lightblue',
-  'border-radius': '50%',
-  translate: '0 -200%',
-}
-```
-
-### `backdropStyles`
-This is an object, just like above, but for styles specific to the backdrop. For example:
-
-```javascript
-{
-  'background-color': 'rgba(0, 150, 0, 0.2)',
-  'backdrop-filter': 'invert(90%) blur(3px)',
-}
+<Modal
+  isShown={modalIsOpen()}
+  closeModal={closeModal}
+  desktopStyles={{
+    dialog: desktopDialogCSS, // object defined elsewhere
+    backdrop: desktopBackdropCSS, // object defined elsewhere
+    button: desktopButtonCSS, // object defined elsewhere
+  }}
+  mobileStyles={{
+    dialog: { background: 'lightskyblue' },
+    button: { border: '2px dashed orange' },
+  }}
+>
+  This is a styled modal.
+</Modal>
 ```
 
 ### `disableDefaultMobileStyles`
@@ -145,7 +142,7 @@ Pass this property if you want to disable default mobile styles and write everyt
 ### `disableDismissMethods`
 Pass this property if you want to remove the default dismiss button. This is dangerous because it means that your users will not be able to close the modal by clicking the button or hitting the Esc key or clicking on the backdrop. You will need to provide your own button with a function that finds the containing `<dialog>` and calls its `.close()` method. It could look like this:
 
-```typescript
+```jsx
   const closeButtonlessModal: JSX.EventHandler<Node, Event> = e => {
     let currentParent: Node | null | undefined = e.currentTarget?.parentNode;
     while (currentParent?.nodeName
@@ -171,8 +168,13 @@ and then the modal can be used like this:
     closeModal={() => undefined}
     disableDismissMethods
   >
-    this is a modal with the default "close" button disabled <br />
-    <button type="button" onClick={closeButtonlessModal}>external exit button</button>
+    <p>this is a modal with the default button disabled</p>
+    <button
+      type="button"
+      onClick={closeButtonlessModal}
+    >
+      external exit button
+    </button>
   </Modal>
 ```
 Notice how even though the modal isn't using the `closeModal` prop anymore, we are still providing it with a function. The reason for that is that we want to keep that prop a requred one as it is the most common scenario. Giving it a function that does nothing allows us to continue doing that.
