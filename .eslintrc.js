@@ -36,5 +36,6 @@ module.exports = {
     'no-unused-expressions': ['error', { allowShortCircuit: true }],
     'arrow-parens': ['error', 'as-needed'],
     'import/extensions': [2, { js: 'never', json: 'always' }],
+    'import/no-unresolved': 0, // disabling due to using vite, not webpack
   },
 };
